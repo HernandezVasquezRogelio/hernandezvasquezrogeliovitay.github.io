@@ -1,0 +1,74 @@
+{
+  "nombre":"Modulo Entregas",
+  "produccion":false,
+  "frecuencia":5,
+  "tipo_frecuencia":0,
+  "soporte":["antonio.perba@gmail.com"],
+  "default": {
+    "servidor": "localhost",
+    "puerto": "1052",
+    "protocolo":"http://",
+    "base_url":"http://localhost:1052"
+  },
+  "docker": {
+    "servidor": "10.0.1.235",
+    "puerto": "1052",
+    "protocolo":"http://",
+    "base_url":"http://10.0.1.235:1052"
+  },
+  "visorus": {
+    "servidor": "192.168.1.133",
+    "puerto": "8086",
+    "base_url":"http://192.168.1.133:8086"
+  },
+  "mongo":{
+    "servidor":"192.168.1.55",
+    "puerto":"27017",
+    "nombre_base":"BaseProductos",
+    "usuario":"ProductosUser",
+    "pass":"Produtos12345",
+    "base_url":"http://192.168.1.55:27017"
+  },
+  "elastic":{
+    "servidor":"192.168.1.55",
+    "puerto":"9223",
+    "base_url":"http://192.168.1.55:9223"
+  },
+  "postgres":{
+    "servidor":"localhost",
+    "puerto":"5432",
+    "nombre_base":"test",
+    "usuario":"postgres",
+    "pass":"rogelioSCC2610"
+  },
+  "casbin": {
+    "servidor": "192.168.1.55",
+    "puerto": "27017",
+    "usuario": "Admin_kore",
+    "pass": "KoreAdmin18",
+    "nombre_base": "Autorizacion",
+    "base_url":"http://192.168.1.55:27017"
+  },
+  "monitor":{
+    "servidor":"192.168.1.55",
+    "puerto":"1029",
+    "usuario":"2",
+    "protocolo":"http://",
+    "base_url":"http://192.168.1.55:1029"
+  },
+  "caja":{
+    "servidor":"10.0.1.95",
+    "puerto":"1036",
+    "protocolo":"http://"
+  },
+  "almacenes":{
+    "servidor":"10.0.1.96",
+    "puerto":"1035",
+    "protocolo":"http://"
+  },
+  "productos":{
+    "servidor":"10.0.1.96",
+    "puerto":"1051",
+    "protocolo":"http://"
+  }
+}
