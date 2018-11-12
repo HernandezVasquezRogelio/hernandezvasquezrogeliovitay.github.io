@@ -17,14 +17,19 @@ func main() {
 	{
 		agente.GET("/persona", AgenteModel.GetAllPersona)
 		agente.POST("/persona", AgenteModel.PostPersona)
-		agente.PUT("/persona/:id", AgenteModel.UpdatePersona)
+		agente.PUT("/persona/update/:id", AgenteModel.UpdatePersona)
+		agente.PUT("/persona/delete/:id", AgenteModel.EliminarPersona)
+
 		agente.GET("", AgenteModel.GetAllAgentes)
 		agente.POST("", AgenteModel.PostAgentes)
 		agente.PUT("/update/:id", AgenteModel.UpdateAgentes)
 		agente.PUT("/delete/:id", AgenteModel.EliminarAgente)
+
 		agente.GET("/direccion", AgenteModel.GetAllDirecciones)
 		agente.POST("/direccion", AgenteModel.PostDirecciones)
-		agente.PUT("/direccion/:id", AgenteModel.UpdateDirecciones)
+		agente.PUT("/direccion/update/:id", AgenteModel.UpdateDirecciones)
+		agente.PUT("/direccion/delete/:id", AgenteModel.EliminarDirecciones)
+
 	}
 	//EndPoint Usuarios
 	/*usuarios := r.Group("usuarios")
