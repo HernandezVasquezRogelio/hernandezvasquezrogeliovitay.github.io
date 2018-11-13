@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/rogelio/Agentes/Controladores/PreRegistroControlador"
 	"github.com/rogelio/Agentes/Init"
 	"github.com/rogelio/Agentes/Modelos/AgenteModel"
 )
@@ -11,6 +12,7 @@ func main() {
 
 	Init.InitAgentes()
 	Init.InitUsuarios()
+	Init.InitPreRegistros()
 	r := gin.Default()
 	//EndPoint Agentes
 	agente := r.Group("agente")
@@ -31,10 +33,11 @@ func main() {
 		agente.PUT("/direccion/delete/:id", AgenteModel.EliminarDirecciones)
 
 	}
-	//EndPoint Usuarios
-	/*usuarios := r.Group("usuarios")
+	//EndPoint PreRegistro
+	usuarios := r.Group("preregistro")
 	{
 		usuarios.GET("")
-	}*/
+		usuarios.POST("", PreRegistroControlador.AgregarUnPreRegistro)
+	}
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

@@ -30,11 +30,7 @@ func InitAgentes() error  {
 			return  err
 		}
 	}
-	if !db.HasTable(&AgenteModel.PreRegistro{}){
-		if err := db.CreateTable(&AgenteModel.PreRegistro{}).Error; err != nil{
-			return  err
-		}
-	}
+
 	if !db.HasTable(&AgenteModel.Agente{}){
 		if err := db.CreateTable(&AgenteModel.Agente{}).AddForeignKey("id_persona",
 			"persona(id_persona)","RESTRICT","CASCADE").Error; err != nil{
