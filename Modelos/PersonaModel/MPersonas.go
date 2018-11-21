@@ -1,4 +1,4 @@
-package AgenteModel
+package PersonaModel
 
 import (
 	"errors"
@@ -7,10 +7,10 @@ import (
 )
 
 //********************************************************************************************************
+//-----------------------Consultar todos las personas
 
-//-----------------------Consultar todos los agentes
-func ConsultarAllAgentes() (error, *[] Agente) {
-	var datos [] Agente
+func ConsultarAllPersonas() (error, *[] Persona) {
+	var datos [] Persona
 	db, err := Conexion.ConexionBDPostgres()
 	if err != nil {
 		return err, nil
@@ -25,21 +25,19 @@ func ConsultarAllAgentes() (error, *[] Agente) {
 }
 
 //********************************************************************************************************
-//-----------------------Consultar un agente
+//-----------------------Consultar una persona
 
-func ConsultaAgente(ID string) (error, *Agente) {
-	var item Agente
+func ConsultaPersona(ID string) (error, *Persona) {
+	var item Persona
 	db, err := Conexion.ConexionBDPostgres()
 	if err != nil {
 		return err, nil
 	}
 	defer db.Close()
-	res := db.
-		Where("id_agente = ?", ID).
-		Find(&item)
+	res := db.Where("id_persona = ?", ID).Find(&item)
 	if res.Error != nil {
 		if res.RecordNotFound() {
-			return errors.New("No se encontro el agente"), nil
+			return errors.New("No se encontro esta persona"), nil
 		}
 		return res.Error, &item
 	}
@@ -47,16 +45,45 @@ func ConsultaAgente(ID string) (error, *Agente) {
 }
 
 //********************************************************************************************************
+//-----------------------Insertar una persona
 
-//-----------------------Agregar un agente
-func (a *Agente) AgregarAgente() error {
+func (p *Persona) InsertaPersona() error {
 	db, err := Conexion.ConexionBDPostgres()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 	tx := db.Begin()
-	err = tx.Create(a).Error
+	err = tx.Create(p).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+
+}
+
+//********************************************************************************************************
+//-----------------------Actualizar una persona
+
+func (a Persona) ActualizarPersona(id string) error {
+	db, err := Conexion.ConexionBDPostgres()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	var personas Persona
+	tx := db.Begin()
+	err = tx.Where("id_persona = ?", id).First(&personas).Error
+	if err != nil {
+		tx.Rollback()
+		if gorm.IsRecordNotFoundError(err) {
+			return errors.New("No se encontro la persona")
+		}
+		return err
+	}
+	err = tx.Model(&a).Update(Persona{Nombre: a.Nombre, ApellidoPat: a.ApellidoPat, ApellidoMat: a.ApellidoMat,
+		FechaNacimiento: a.FechaNacimiento, Sexo: a.Sexo, Email: a.Email, Telefono: a.Telefono}).Error
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -65,58 +92,29 @@ func (a *Agente) AgregarAgente() error {
 }
 
 //********************************************************************************************************
+//-----------------------Eliminar una persona
 
-//----------------------actualizar datos del agente
-func (a Agente) ActualizarAgentes(id string) error {
+func (a Persona) EliminarPersona(id string) error {
 	db, err := Conexion.ConexionBDPostgres()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
-	var agentes Agente
+	var personas Persona
 	tx := db.Begin()
-	err = tx.Where("id_agente = ?", id).First(&agentes).Error
+	err = tx.Where("id_persona = ?", id).First(&personas).Error
 	if err != nil {
 		tx.Rollback()
 		if gorm.IsRecordNotFoundError(err) {
-			return errors.New("No se encontro el agente")
+			return errors.New("No se encontro la persona")
 		}
 		return err
-
 	}
-	err = tx.Model(&a).Update(Agente{IdPersona: a.IdPersona, CodigoInvitacion: a.CodigoInvitacion}).Error
-	if err != nil {
+	if !personas.Estado {
 		tx.Rollback()
-		return err
+		return errors.New("Esta persona ya ha sido inhabilitado")
 	}
-	return tx.Commit().Error
-}
-
-//********************************************************************************************************
-
-//--------------------------inhabilitar un agente
-func (a Agente) EliminarAgentes(id string) error {
-	db, err := Conexion.ConexionBDPostgres()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	var agentes Agente
-	tx := db.Begin()
-	err = tx.Where("id_agente = ?", id).First(&agentes).Error
-	if err != nil {
-		tx.Rollback()
-		if gorm.IsRecordNotFoundError(err) {
-			return errors.New("Este Agente no se encontro")
-		}
-		return err
-
-	}
-	if !agentes.Estado {
-		tx.Rollback()
-		return errors.New("Este agente ya ha sido inhabilitado")
-	}
-	err = tx.Model(&a).Update("estado", false).Error
+	err = tx.Model(&a).Where("estado = ?", true).Update("estado", false).Error
 	if err != nil {
 		tx.Rollback()
 		return err

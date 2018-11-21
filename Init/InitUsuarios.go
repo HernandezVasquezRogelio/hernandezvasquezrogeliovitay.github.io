@@ -2,6 +2,7 @@ package Init
 
 import (
 	"github.com/rogelio/Agentes/Conexion"
+	"github.com/rogelio/Agentes/Modelos/PerfilModel"
 	"github.com/rogelio/Agentes/Modelos/UsuariosModel"
 )
 
@@ -14,8 +15,8 @@ func InitUsuarios() error  {
 	}
 	//Creando Tablas
 	db.SingularTable(true)
-	if !db.HasTable(&UsuariosModel.Perfil{}){
-		if err := db.CreateTable(&UsuariosModel.Perfil{}).Error; err != nil{
+	if !db.HasTable(&PerfilModel.Perfil{}){
+		if err := db.CreateTable(&PerfilModel.Perfil{}).Error; err != nil{
 			return  err
 		}
 	}

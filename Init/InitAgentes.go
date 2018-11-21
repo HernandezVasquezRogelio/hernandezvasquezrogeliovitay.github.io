@@ -3,7 +3,8 @@ package Init
 import (
 	"github.com/rogelio/Agentes/Conexion"
 	"github.com/rogelio/Agentes/Modelos/AgenteModel"
-
+	"github.com/rogelio/Agentes/Modelos/DireccionesModel"
+	"github.com/rogelio/Agentes/Modelos/PersonaModel"
 )
 
 func InitAgentes() error  {
@@ -15,8 +16,8 @@ func InitAgentes() error  {
 	}
 	//Creando Tablas
 	db.SingularTable(true)
-	if !db.HasTable(&AgenteModel.Persona{}){
-		if err := db.CreateTable(&AgenteModel.Persona{}).Error; err != nil{
+	if !db.HasTable(&PersonaModel.Persona{}){
+		if err := db.CreateTable(&PersonaModel.Persona{}).Error; err != nil{
 			return  err
 		}
 	}
@@ -25,8 +26,8 @@ func InitAgentes() error  {
 			return  err
 		}
 	}
-	if !db.HasTable(&AgenteModel.CrudDirecciones{}){
-		if err := db.CreateTable(&AgenteModel.CrudDirecciones{}).Error; err != nil{
+	if !db.HasTable(&DireccionesModel.Direcciones{}){
+		if err := db.CreateTable(&DireccionesModel.Direcciones{}).Error; err != nil{
 			return  err
 		}
 	}
